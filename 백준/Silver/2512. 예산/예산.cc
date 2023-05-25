@@ -11,8 +11,9 @@ int bound() {
 	int end = arr[n - 1];
 	int mid = (start + end) / 2;
 	int res = 0;
-	while (start != end) {
+	while (start <= end) {
 		int sum = 0;
+		mid = (start + end) / 2;
 		for (int i = 0; i < n; i++) {
 			if (mid >= arr[i]) {
 				sum += arr[i];
@@ -22,13 +23,12 @@ int bound() {
 			}
 		}
 		if (sum > m) {
-			end = mid;
+			end = mid - 1;
 		}
 		else if (sum <= m) {
-			start = mid +1 ;
+			start = mid +1;
 			res = max(res, mid);
 		}
-		mid = (start + end) / 2;
 	}
 	return res;
 }
@@ -44,11 +44,6 @@ int main() {
 	for (int i = 0; i < n; i++) {
 		sum += arr[i];
 	}
-	if (sum <= m) {
-		printf("%d\n", arr[n - 1]);
-	}
-	else {
-		printf("%d\n", bound());
-	}
+	printf("%d\n", bound());
 	return 0;
 }
