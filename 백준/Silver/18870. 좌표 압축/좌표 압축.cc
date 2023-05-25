@@ -4,24 +4,22 @@
 #include <map>
 #include <vector>
 using namespace std;
+int arr[1000001];
 int main() {
 	int n;
 	scanf("%d", &n);
-	vector<int> v1;
 	map<int, int> m;
 	for (int i = 0; i < n; i++) {
-		int x;
-		scanf("%d", &x);
-		v1.push_back(x);
-		m[x] = 0;
+		scanf("%d", &arr[i]);
+		m[arr[i]] = 0;
 	}
 	int idx = 0;
 	for (auto iter = m.begin(); iter != m.end(); iter++) {
 		iter->second = idx;
 		idx++;
 	}
-	for (int i = 0; i < v1.size(); i++) {
-		printf("%d ", m[v1[i]]);
+	for (int i = 0; i < n; i++) {
+		printf("%d ", m[arr[i]]);
 	}
 
 	return 0;
