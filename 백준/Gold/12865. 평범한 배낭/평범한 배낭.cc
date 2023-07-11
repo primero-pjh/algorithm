@@ -1,65 +1,43 @@
-#define _CRT_SECURE_NO_WARNINGS
-
-#include <stdio.h>
+#include <iostream>
 #include <algorithm>
 #include <vector>
+
 using namespace std;
 
-vector<pair<int, int>> v;
-int dp1[100][100000] = { 0, };
-int dp2[100][100000] = { 0, };
-bool compare(pair<int, int>a, pair<int, int>b) {
-	if (a.first == b.first) {
-		return a.second < b.second;
-	}
-	else {
-		return a.first < b.first;
-	}
-}
-
+pair<int, int> arr[100001];
+int dp[101][100001];
 int main() {
+	cin.sync_with_stdio(false);
+	cin.tie(NULL);
 	int n, k;
-	scanf("%d %d", &n, &k);
+	cin >> n >> k;
 	for (int i = 0; i < n; i++) {
-		pair<int, int> p;
-		scanf("%d %d", &p.first, &p.second);
-		v.push_back(p);
+		cin >> arr[i].first >> arr[i].second;
 	}
 
-	sort(v.begin(), v.end(), compare);
+	sort(arr, arr + n);
 	for (int i = 0; i < n; i++) {
-		if (i == 0) {
-			for (int j = 1; j <= k; j++) {
-				if (v[i].first <= j) {
-					dp1[i][j - 1] = v[i].second;
-					dp2[i][j - 1] = v[i].first;
-				}
+		int first = arr[i].first;
+		int second = arr[i].second;
+		for (int j = 0; j <= k; j++) {
+			if (j - first >= 0) {
+				int value1 = second + dp[i][j - first];
+				int value2 = dp[i][j];
+				dp[i + 1][j] = max(value1, value2);
+			}
+			else {
+				dp[i + 1][j] = dp[i][j];
 			}
 		}
-		else {
-			for (int j = 1; j <= k; j++) {
-				dp1[i][j - 1] = dp1[i - 1][j - 1];
-				dp2[i][j - 1] = dp2[i - 1][j - 1];
-				
-				if (v[i].first <= j) {
-					dp1[i][j - 1] = max(dp1[i - 1][j - 1], v[i].second);
-					dp2[i][j - 1] = max(dp2[i - 1][j - 1], v[i].first);
-				}
-				if (j - v[i].first > 0) {
-					dp1[i][j - 1] = max(v[i].second + dp1[i-1][j - v[i].first-1], dp1[i][j - 1]);
-					//dp1[i][j - 1] = max(dp1[i][j - 1] + v[i].second, dp1[i][j-1]);
-					//dp2[i][j - 1] = max(dp2[i][j - 1] + v[i].first, dp2[i][j-1]);
-				}
-			}
-		}
-		
 	}
-	int res = 0;
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < k; j++) {
-			res = max(res, dp1[i][j]);
+
+	int max_value = 0;
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= k; j++) {
+			max_value = max(dp[i][j], max_value);
 		}
 	}
-	printf("%d", res);
+	
+	cout << max_value;
 	return 0;
 }
