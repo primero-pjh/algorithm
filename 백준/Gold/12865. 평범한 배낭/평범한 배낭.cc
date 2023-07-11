@@ -1,43 +1,32 @@
-#include <iostream>
-#include <algorithm>
-#include <vector>
-
+#include<iostream>
+#include<algorithm>
+ 
 using namespace std;
-
-pair<int, int> arr[100001];
-int dp[101][100001];
-int main() {
-	cin.sync_with_stdio(false);
-	cin.tie(NULL);
-	int n, k;
-	cin >> n >> k;
-	for (int i = 0; i < n; i++) {
-		cin >> arr[i].first >> arr[i].second;
-	}
-
-	sort(arr, arr + n);
-	for (int i = 0; i < n; i++) {
-		int first = arr[i].first;
-		int second = arr[i].second;
-		for (int j = 0; j <= k; j++) {
-			if (j - first >= 0) {
-				int value1 = second + dp[i][j - first];
-				int value2 = dp[i][j];
-				dp[i + 1][j] = max(value1, value2);
-			}
-			else {
-				dp[i + 1][j] = dp[i][j];
-			}
-		}
-	}
-
-	int max_value = 0;
-	for (int i = 1; i <= n; i++) {
-		for (int j = 1; j <= k; j++) {
-			max_value = max(dp[i][j], max_value);
-		}
-	}
-	
-	cout << max_value;
-	return 0;
+ 
+int item[102][2]; // 0 -무게 / 1- 가치
+int d[100002];
+ 
+int main()
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(0);
+    cout.tie(0);
+ 
+    int n, k;
+    cin >> n >> k;
+ 
+    for (int i = 0; i < n; i++)
+    {
+        int w, v;
+        cin >> w >> v;       //각 아이템의 무게와 가치 입력
+         
+        for (int j = k; j >=w; j--)  // 가방 용량이 w ~ k 인 경우 전부 구하기
+        {
+            d[j] = max(d[j - w] + v, d[j]);  //item을 넣었을 때와 넣지 않은 것중 가치 큰 값 저장
+        }
+    }
+ 
+    cout << d[k];  // 가방무게가 k일 때 가치의 최대 값
+ 
+    return 0;
 }
