@@ -1,64 +1,58 @@
-//2022-01-04
-#include<iostream>
-#include<string>
-#include<vector>
-#include<sstream>
+#include <iostream>
+#include <string>
+#include <stack>
 
 using namespace std;
-vector<int> res;
+
+stack<int> s;
+
 int main() {
+	ios::sync_with_stdio(0);
+	cin.tie(0);
+	cout.tie(0);
+
 	int n;
 	cin >> n;
-    cin.ignore();
-    while (n--) {
-        string str = "";
-        string cmd = "";
-        getline(cin, str);
-        vector<string> x; x.clear();
-        if (str.find("push") != string::npos) {
-            istringstream ss(str);
-            string stringBuffer;
-            while (getline(ss, stringBuffer, ' ')) {
-                x.push_back(stringBuffer);
-            }
-            cmd = x[0];
-        }
-        else {
-            cmd = str;
-        }
-
-        if (cmd == "push") {
-            res.push_back(stoi(x[1]));
-        }
-        else if (cmd == "pop") {
-            if (res.size() == 0) {
-                printf("%d\n", -1);
-            }
-            else {
-                int a = res[res.size()-1];
-                printf("%d\n", a);
-                res.pop_back();
-            }
-        }
-        else if (cmd == "size") {
-            printf("%d\n", res.size());
-        }
-        else if (cmd == "empty") {
-            if (res.size() == 0) {
-                printf("%d\n", 1);
-            }
-            else {
-                printf("%d\n", 0);
-            }
-        }
-        else if (cmd == "top") {
-            if (res.size() == 0) {
-                printf("%d\n", -1);
-            }
-            else {
-                printf("%d\n", res[res.size() -1]);
-            }
-        }
-    }
+	cin.ignore();
+	for (int i = 0; i < n; i++) {
+		string str;
+		getline(cin, str);
+		if (str.size() >= 6) {
+			string num = "";
+			for (int j = 5; j < str.size(); j++) {
+				num += str[j];
+			}
+			s.push(stoi(num));
+		} else {
+			if (str == "top") {
+				if (s.empty()) {
+					cout << -1 << "\n";
+				}
+				else {
+					cout << s.top() << "\n";
+				}
+			}
+			else if (str == "size") {
+				cout << s.size() << "\n";
+			}
+			else if (str == "pop") {
+				if (s.empty()) {
+					cout << -1 << "\n";
+				}
+				else {
+					cout << s.top() << "\n";
+					s.pop();
+				}
+			}
+			else if (str == "empty") {
+				if (s.empty()) {
+					cout << 1 << "\n";
+				}
+				else {
+					cout << 0 << "\n";
+				}
+			}
+		}
+	}
 	return 0;
 }
