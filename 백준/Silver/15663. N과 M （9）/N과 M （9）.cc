@@ -44,12 +44,12 @@ int main() {
 		cin >> arr[i];
 	}
 	sort(arr, arr + n);
-	vector<int> v;
+	
 	for (int i = 0; i < n; i++) {
 		type[i] = 1;
+		vector<int> v;
 		v.push_back(arr[i]);
 		dfs(i, v);
-		v.pop_back();
 		type[i] = 0;
 	}
 	return 0;
