@@ -1,44 +1,36 @@
-// 2021-12-06
+#include <iostream>
+#include <vector>
+#include <algorithm>
 
-#include<iostream>
-#include<map>
-#include<vector>
-#include<algorithm>
-//#include<sstream>
 using namespace std;
+typedef long long ll;
+ll n, s, t;
+vector<pair<ll, ll>> arr;
+vector<pair<ll, ll>> res;
+int main() {
+	ios::sync_with_stdio(0);
+	cin.tie(0); cout.tie(0);
+	cin >> n;
+	for (int i = 0; i < n; i++) {
+		pair<ll, ll> temp;
+		cin >> temp.first >> temp.second;
+		arr.push_back(temp);
+	}
+	sort(arr.begin(), arr.end());
 
-bool cmp(const pair<int, int> &a, const pair<int, int> &b) {
-    if (a.second == b.second) return a.first < b.first;
-    return a.second < b.second;
-}
-
-int main()
-{
-    int n;
-    cin >> n;
-    map<int, int> m; m.clear();
-    vector<pair<int, int>> v;
-    for (int i = 0; i < n; i++) {
-        int x; int y;
-        cin >> x >> y;
-        pair<int, int> pp;
-        pp.first = x;
-        pp.second = y;
-        v.push_back(pp);
-    }
-    sort(v.begin(), v.end(), cmp);
-
-    //// v[0].first -> 기준
-    int cnt = 1;
-    int pre_val = 0;
-    pre_val = v[0].second;
-    for (int i = 1; i < v.size(); i++) {
-        if (pre_val <= v[i].first) {
-            cnt++;
-            pre_val = v[i].second;
-        }
-    }
-    cout << cnt << endl;
-
-    return 0;
+	res.push_back(arr[0]);
+	for (int i = 1; i < n; i++) {
+		pair<int, int> last = res[res.size() - 1];
+		if (last.second > arr[i].first) {
+			if (last.second >= arr[i].second) {
+				res[res.size() - 1].first = arr[i].first;
+				res[res.size() - 1].second = arr[i].second;
+			}
+		}
+		else {
+			res.push_back(arr[i]);
+		}
+	}
+	cout << res.size() << "\n";
+	return 0;
 }
