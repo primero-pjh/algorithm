@@ -1,59 +1,51 @@
-#include <stdio.h>
+#include <iostream>
 #include <vector>
 
 using namespace std;
 
-int arr[1000001] = { 0, };
+int n;
+int arr[1000001];
 vector<int> v;
 
-void b_search(int start, int end, int x) {
-	int mid = (start + end) / 2;
-	//printf("[%d, %d] mid: [%d]\n", start, end, mid);
-	if (start == end) {
-		v[mid] = x;
-		/*for (int i = 0; i < v.size(); i++) {
-			printf("%d ", v[i]);
-		}*/
-		return;
+void b_search(int idx) {
+	int start = 0;
+	int end = v.size() - 1;
+	while (1) {
+		int mid = (start + end) / 2;
+		if (start == end) {
+			v[mid] = arr[idx];
+			return;
+		}
+		if (arr[idx] > v[mid]) {
+			start = mid + 1;
+		} else if (arr[idx] == v[mid]) {
+			return;
+		} else if (arr[idx] < v[mid]) {
+			end = mid;
+		}
 	}
-	if (x > v[mid]) {
-		b_search(mid+1, end, x);
-	}
-	else if (x == v[mid]) {
-		return;
-	}
-	else {
-		b_search(start, mid, x);
-	}
-
 }
 int main() {
-	int n;
-	scanf("%d", &n);
+	ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+	cin >> n;
 	for (int i = 0; i < n; i++) {
-		int a;
-		scanf("%d", &a);
-		arr[i] = a;
+		cin >> arr[i];
 	}
+	
 	v.push_back(arr[0]);
 	for (int i = 1; i < n; i++) {
-		//printf("i: %d, x: %d\n", i, arr[i]);
-		//printf("v.size: %d\n", v.size());
-		if (arr[i] > v[v.size()-1]) {
+		if (arr[i] > v.back()) {
 			v.push_back(arr[i]);
 		}
-		else if (arr[i] == v[v.size() - 1]) {
+		else if (arr[i] == arr[i - 1]) {
 			continue;
 		}
 		else {
-			b_search(0, v.size()-1, arr[i]);
+			b_search(i);
 		}
 	}
 
-	/*for (int i = 0; i < v.size(); i++) {
-		printf("%d ", v[i]);
-	}*/
+	cout << v.size();
 
-	printf("%d", v.size());
 	return 0;
 }
